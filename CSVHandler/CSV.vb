@@ -1,5 +1,4 @@
 ﻿Imports System.IO
-Imports System.Threading
 Module Module1
 
 
@@ -113,10 +112,8 @@ Public Class CSV
 
 
 
-    Protected Function getTempMode() As Boolean
-        getTempMode = tempMode
-    End Function
 
+#Region "SETTERS"
 
     Protected Friend Sub setTempMode(mode As Boolean)
         Me.tempMode = mode
@@ -127,6 +124,9 @@ Public Class CSV
         End If
     End Sub
 
+#End Region
+
+#Region "GETTERS"
     Protected Friend Function getPath() As String
         Return filePath
     End Function
@@ -138,6 +138,26 @@ Public Class CSV
     End Function
 
 
+
+
+    Protected Function getTempMode() As Boolean
+        getTempMode = tempMode
+    End Function
+
+
+#End Region
+
+
+
+
+
+    Protected Function getHeaderLine() As String
+        Return turnStringArrayToCSVLine(columns)
+    End Function
+
+
+
+
     Protected Overridable Sub validateInput()
         If columns Is Nothing Then
             Throw New ConstraintException("No columns supllied")
@@ -147,10 +167,6 @@ Public Class CSV
 
 
 
-
-    Protected Function getHeaderLine() As String
-        Return turnStringArrayToCSVLine(columns)
-    End Function
 
 
 
@@ -285,6 +301,20 @@ Public Class CSVWriter
         MyBase.New(filepath, columns)
         Me.stringData = data
     End Sub
+
+
+    Public Sub New(filepath As String, data As Dictionary(Of String, String))
+        MyBase.New(filepath, data.Keys.ToArray)
+        Me.data = data.Values.ToArray
+        Me.stringData = getDataLine()
+    End Sub
+
+
+
+
+
+
+
 
 
     Public Sub setData(data As String())
